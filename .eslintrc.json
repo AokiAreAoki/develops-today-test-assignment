@@ -30,7 +30,7 @@
     ],
     "rules": {
         "react/react-in-jsx-scope": "off",
-        "consistent-return": "off",
+        "consistent-return": "warn",
         "prettier/prettier": [
             "warn",
             {
@@ -70,7 +70,7 @@
         "react/jsx-indent-props": "off",
         "react/jsx-indent": "off",
         "react/jsx-wrap-multilines": "off",
-        "react/require-default-props": "warn",
+        "react/require-default-props": "off",
         "react/function-component-definition": "off",
         "react/jsx-props-no-spreading": "off",
         "react/destructuring-assignment": "off",
