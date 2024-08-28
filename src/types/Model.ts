@@ -1,6 +1,8 @@
-export default interface Model {
-	modelId: number
-	modelName: string
-	makeId: number
-	makeName: string
+interface Model {
+	modelId: number;
+	modelName: string;
+	makeId: number;
+	makeName: string;
 }
+
+export default Model;

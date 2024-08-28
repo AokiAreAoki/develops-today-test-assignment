@@ -1,8 +1,8 @@
-'use client'
+"use client";
 
 import { useMemo, useState } from "react";
 import Option from "../../types/Option";
-import Dropdown from "../common/dropdown";
+import Dropdown from "../common/Dropdown";
 import { MakeWithVehicleType } from "../../types/Make";
 import makeLookupTable from "../../utils/makeLookupTable";
 import useMakes from "../../hooks/useMakes";
@@ -11,34 +11,41 @@ import Loading from "../common/Loading";
 import CustomLink from "../common/CustomLink";
 
 function MakeAndYearSelect() {
-	const [makeId, setMakeId] = useState<string | null>(null)
-	const [year, setYear] = useState<number | null>(null)
-	const { loading, makes } = useMakes()
-	const years = useYears()
+	const [makeId, setMakeId] = useState<string | null>(null);
+	const [year, setYear] = useState<number | null>(null);
+	const { loading, makes } = useMakes();
+	const years = useYears();
 
-	const lookup = useMemo(() => (makes
-		? makeLookupTable(makes, make => make.makeId, true)
-		: {}
-	), [makes])
+	const lookup = useMemo(
+		() =>
+			makes ? makeLookupTable(makes, (make) => make.makeId, true) : {},
+		[makes],
+	);
 
-	const makeOptions = useMemo((): Option[] => {
-		return makes?.map(make => ({
-			key: make.makeId,
-			label: make.makeName + ' - ' + make.vehicleTypeName,
-		})) || []
-	}, [makes])
+	const makeOptions = useMemo(
+		(): Option[] =>
+			makes?.map((make) => ({
+				key: make.makeId,
+				label: `${make.makeName} - ${make.vehicleTypeName}`,
+			})) || [],
+		[makes],
+	);
 
-	const yearOptions = useMemo((): Option[] => {
-		return years.map(year => ({ key: year, label: year }))
-	}, [years])
+	const yearOptions = useMemo(
+		(): Option[] => years.map((y) => ({ key: y, label: y })),
+		[years],
+	);
 
-	const make = useMemo(() => lookup[makeId]?.value as (MakeWithVehicleType | undefined), [lookup, makeId])
-	const canNext = Boolean(make && year)
+	const make = useMemo(
+		() => lookup[makeId]?.value as MakeWithVehicleType | undefined,
+		[lookup, makeId],
+	);
+	const canNext = Boolean(make && year);
 
-	const href = useMemo(() => (canNext
-		? `result/${makeId}/${year}`
-		: ''
-	), [canNext, makeId, year])
+	const href = useMemo(
+		() => (canNext ? `result/${makeId}/${year}` : ""),
+		[canNext, makeId, year],
+	);
 
 	return (
 		<Loading loading={loading}>
@@ -71,4 +78,4 @@ function MakeAndYearSelect() {
 	);
 }
 
-export default MakeAndYearSelect
+export default MakeAndYearSelect;

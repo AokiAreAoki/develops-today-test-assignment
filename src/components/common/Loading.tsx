@@ -1,34 +1,31 @@
-import { FC, PropsWithChildren, useEffect, useState } from "react"
+import { FC, PropsWithChildren, useEffect, useState } from "react";
 
 interface Props extends PropsWithChildren {
-	loading: boolean
+	loading: boolean;
 }
 
 const Loading: FC<Props> = ({ loading, children }) => {
-	const [ellipsis, setEllipsis] = useState('')
-	const displayChildren = !loading && children
+	const [ellipsis, setEllipsis] = useState("");
+	const displayChildren = !loading && children;
 
 	useEffect(() => {
-		if (displayChildren) return
+		if (displayChildren) return;
 
-		let count = 0
+		let count = 0;
 
 		const interval = setInterval(() => {
-			count = count % 3 + 1
-			setEllipsis('.'.repeat(count))
+			count = (count % 3) + 1;
+			setEllipsis(".".repeat(count));
 		}, 150);
 
-		return () => clearInterval(interval)
-	}), [displayChildren]
+		return () => clearInterval(interval);
+	}, [displayChildren]);
 
-	if (displayChildren)
-		return children
+	return displayChildren ? (
+		children
+	) : (
+		<div className="rounded-sm bg-gray-300 p-1">Loading{ellipsis}</div>
+	);
+};
 
-	return (
-		<div className="rounded-sm bg-gray-300 p-1">
-			Loading{ellipsis}
-		</div>
-	)
-}
-
-export default Loading
+export default Loading;
