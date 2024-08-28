@@ -9,7 +9,7 @@ const Loading: FC<Props> = ({ loading, children }) => {
 	const displayChildren = !loading && children;
 
 	useEffect(() => {
-		if (displayChildren) return;
+		if (displayChildren) return null;
 
 		let count = 0;
 

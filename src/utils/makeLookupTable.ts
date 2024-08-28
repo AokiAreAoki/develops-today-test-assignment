@@ -1,4 +1,4 @@
-import { Key } from "react";
+type Key = string | number | symbol;
 
 interface Wrapper<K, V> {
 	key: K;
@@ -37,5 +37,5 @@ export default function makeLookupTable<
 		});
 	}
 
-	return lookup as Lookup<T, K, U>;
+	return lookup as Lookup<T, Key, U>;
 }

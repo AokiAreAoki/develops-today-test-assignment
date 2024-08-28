@@ -7,32 +7,35 @@ export default class APIService {
 	static endpoints = {
 		getAllMakes: () =>
 			`https://vpic.nhtsa.dot.gov/api/vehicles/getallmakes?format=json`,
-		getMakesForVehicleType: (vehicleType: string) =>
+		getMakesForVehicleType: (vehicleType: string | number) =>
 			`https://vpic.nhtsa.dot.gov/api/vehicles/GetMakesForVehicleType/${vehicleType}?format=json`,
-		getModelsForMakeIdYear: (makeId: number, year: number) =>
+		getModelsForMakeIdYear: (
+			makeId: string | number,
+			year: string | number,
+		) =>
 			`https://vpic.nhtsa.dot.gov/api/vehicles/GetModelsForMakeIdYear/makeId/${makeId}/modelyear/${year}?format=json`,
 	};
 
-	static async getAllMakes(): APIResponse<Make[]> {
+	static async getAllMakes(): Promise<APIResponse<Make[]>> {
 		try {
 			const data = await fetch(this.endpoints.getAllMakes());
 			const json = await data.json();
 			const results = (json.Results || []) as any[];
 
-			return wrapAPIResponse(
+			return wrapAPIResponse.success(
 				results.map((make) => ({
 					makeId: make.Make_ID,
 					makeName: make.Make_Name,
 				})),
 			);
 		} catch (error) {
-			return wrapAPIResponse(error as Error, true);
+			return wrapAPIResponse.error(error as Error);
 		}
 	}
 
 	static async getMakesForVehicleType(
 		vehicleType: string = "car",
-	): APIResponse<MakeWithVehicleType[]> {
+	): Promise<APIResponse<MakeWithVehicleType[]>> {
 		try {
 			const data = await fetch(
 				this.endpoints.getMakesForVehicleType(vehicleType),
@@ -40,7 +43,7 @@ export default class APIService {
 			const json = await data.json();
 			const results = (json.Results || []) as any[];
 
-			return wrapAPIResponse(
+			return wrapAPIResponse.success(
 				results.map((make) => ({
 					makeId: make.MakeId,
 					makeName: make.MakeName,
@@ -49,14 +52,14 @@ export default class APIService {
 				})),
 			);
 		} catch (error) {
-			return wrapAPIResponse(error as Error, true);
+			return wrapAPIResponse.error(error as Error);
 		}
 	}
 
 	static async getModelsForMakeIdYear(
 		makeId: string | number,
 		year: string | number,
-	): APIResponse<Model[]> {
+	): Promise<APIResponse<Model[]>> {
 		try {
 			const data = await fetch(
 				this.endpoints.getModelsForMakeIdYear(makeId, year),
@@ -64,7 +67,7 @@ export default class APIService {
 			const json = await data.json();
 			const results = (json.Results || []) as any[];
 
-			return wrapAPIResponse(
+			return wrapAPIResponse.success(
 				results.map((model) => ({
 					makeId: model.Make_ID,
 					makeName: model.Make_Name,
@@ -73,7 +76,7 @@ export default class APIService {
 				})),
 			);
 		} catch (error) {
-			return wrapAPIResponse(error as Error, true);
+			return wrapAPIResponse.error(error as Error);
 		}
 	}
 }

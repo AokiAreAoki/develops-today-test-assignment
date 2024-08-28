@@ -1,9 +1,8 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import Option from "../../types/Option";
-import Dropdown from "../common/Dropdown";
-import { MakeWithVehicleType } from "../../types/Make";
+import Dropdown, { Value as DropdownValue } from "../common/Dropdown";
 import makeLookupTable from "../../utils/makeLookupTable";
 import useMakes from "../../hooks/useMakes";
 import useYears from "../../hooks/useYears";
@@ -16,28 +15,27 @@ function MakeAndYearSelect() {
 	const { loading, makes } = useMakes();
 	const years = useYears();
 
-	const lookup = useMemo(
-		() =>
-			makes ? makeLookupTable(makes, (make) => make.makeId, true) : {},
-		[makes],
-	);
+	const lookup = useMemo(() => {
+		if (!makes) return {};
+		return makeLookupTable(makes, (make) => make.makeId, true);
+	}, [makes]);
 
-	const makeOptions = useMemo(
-		(): Option[] =>
-			makes?.map((make) => ({
-				key: make.makeId,
-				label: `${make.makeName} - ${make.vehicleTypeName}`,
-			})) || [],
-		[makes],
-	);
+	const makeOptions = useMemo((): Option[] => {
+		if (!makes) return [];
+
+		return makes.map((make) => ({
+			key: make.makeId,
+			label: `${make.makeName} - ${make.vehicleTypeName}`,
+		}));
+	}, [makes]);
 
 	const yearOptions = useMemo(
-		(): Option[] => years.map((y) => ({ key: y, label: y })),
+		(): Option[] => years.map((y) => ({ key: y, label: String(y) })),
 		[years],
 	);
 
 	const make = useMemo(
-		() => lookup[makeId]?.value as MakeWithVehicleType | undefined,
+		() => (makeId ? lookup[makeId].value : null),
 		[lookup, makeId],
 	);
 	const canNext = Boolean(make && year);
@@ -47,6 +45,14 @@ function MakeAndYearSelect() {
 		[canNext, makeId, year],
 	);
 
+	const handleMakeId = useCallback((key: DropdownValue) => {
+		setMakeId(key != null ? String(key) : null);
+	}, []);
+
+	const handleYear = useCallback((key: DropdownValue) => {
+		setYear(key != null ? Number(key) : null);
+	}, []);
+
 	return (
 		<Loading loading={loading}>
 			<div className="flex flex-col p-6 gap-3 bg-gray-200 rounded-3xl overflow-hidden">
@@ -54,7 +60,7 @@ function MakeAndYearSelect() {
 					<label>Select make:</label>
 					<Dropdown
 						value={makeId}
-						onChange={setMakeId}
+						onChange={handleMakeId}
 						options={makeOptions}
 					/>
 				</div>
@@ -63,7 +69,7 @@ function MakeAndYearSelect() {
 					<label>Select year:</label>
 					<Dropdown
 						value={year}
-						onChange={setYear}
+						onChange={handleYear}
 						options={yearOptions}
 					/>
 				</div>

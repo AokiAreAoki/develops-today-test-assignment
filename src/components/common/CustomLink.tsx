@@ -5,7 +5,7 @@ import cs from "../../utils/cs";
 type LinkProps = Pick<Parameters<typeof Link>[0], "href">;
 
 interface Props extends LinkProps, PropsWithChildren {
-	disabled: boolean;
+	disabled?: boolean;
 }
 
 const CustomLink: FC<Props> = ({ href, disabled, children }) => (

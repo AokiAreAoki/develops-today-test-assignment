@@ -3,9 +3,9 @@ import Option from "../../types/Option";
 
 const NOT_SELECTED = "--";
 
-type Value = Key | null | undefined;
+export type Value = Key | null | undefined;
 
-interface Props {
+export interface Props {
 	value: Value;
 	onChange: (value: Value) => void;
 	options: Option[];
@@ -21,11 +21,11 @@ const Dropdown: FC<Props> = ({ value, onChange, options }) => {
 	);
 
 	return (
-		<select value={value || NOT_SELECTED} onChange={handleChange}>
+		<select value={String(value || NOT_SELECTED)} onChange={handleChange}>
 			<option value={NOT_SELECTED}>{NOT_SELECTED}</option>
 
 			{options.map(({ key, label }) => (
-				<option key={key} value={key}>
+				<option key={key} value={String(key)}>
 					{label}
 				</option>
 			))}

@@ -14,7 +14,7 @@ export default function useMakes() {
 
 			if (!makesResponse.success) {
 				console.error(makesResponse.error);
-				return [];
+				return;
 			}
 
 			setMakes(makesResponse.data);

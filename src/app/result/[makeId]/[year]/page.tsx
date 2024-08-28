@@ -10,7 +10,7 @@ interface StaticParams {
 	year: string;
 }
 
-export async function generateStaticParams(): StaticParams[] {
+export async function generateStaticParams(): Promise<StaticParams[]> {
 	const response = await APIService.getMakesForVehicleType();
 
 	if (!response.success) {
