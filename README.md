@@ -2,7 +2,18 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 ## Getting Started
 
-First, run the development server:
+First, install dependecies:
+```bash
+npm i
+# or
+yarn i
+# or
+pnpm i
+# or
+bun i
+```
+
+Now you can run the development server:
 
 ```bash
 npm run dev
@@ -13,6 +24,8 @@ pnpm dev
 # or
 bun dev
 ```
+
+[Video example](https://ilker2445.uk/aoki/dl/How%20to%20start%20DevelopsToday%20Test%20Assignment.mp4)
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
